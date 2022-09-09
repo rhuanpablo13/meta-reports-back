@@ -39,6 +39,7 @@ public class WeatherService implements ServiceDao<Weather> {
     @Override
     public Weather inserir(Weather t) {
         log.info("inserindo {}", t);
+        t = weatherRepository.save(t);
         t.getForecast().forEach(f -> {
             f = forecastService.inserir(f);
         });
@@ -51,9 +52,9 @@ public class WeatherService implements ServiceDao<Weather> {
         
         Optional<Weather> w = buscarPorId(id);
         if (w.isPresent()) {
-            w.get().getForecast().forEach(f -> {
-                forecastService.excluir(f.getId());
-            });
+            // w.get().getForecast().forEach(f -> {
+            //     forecastService.excluir(f.getId());
+            // });
             weatherRepository.deleteById(id);
             if (buscarPorId(id) == null) return true;
         }
