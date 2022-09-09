@@ -3,6 +3,7 @@ package br.com.meta.api.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.com.meta.api.dto.WeatherDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -70,4 +72,27 @@ public class Weather implements Serializable {
     @Builder.Default
     @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Forecast> forecast = new ArrayList<>();
+
+
+    public WeatherDTO toWeatherDTO() {
+        return WeatherDTO.builder()
+        .id(id)
+        .temp(temp)
+        .date(date)
+        .conditionCode(conditionCode)
+        .description(description)
+        .currently(currently)
+        .cid(cid)
+        .city(city)
+        .cityName(cityName)
+        .imgId(imgId)
+        .windSpeedy(windSpeedy)
+        .sunrise(sunrise)
+        .sunset(sunset)
+        .conditionSlug(conditionSlug)
+        .humidity(humidity)
+        .time(time)
+        .forecast(forecast != null ? forecast.stream().map(Forecast::toForecastDTO).collect(Collectors.toList()) : new ArrayList<>())
+        .build();
+    }
 }

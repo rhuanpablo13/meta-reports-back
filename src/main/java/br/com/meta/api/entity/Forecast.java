@@ -4,13 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import br.com.meta.api.dto.ForecastDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +45,19 @@ public class Forecast implements Serializable {
     @Column
     private String condition;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Weather weather;
+    // @ManyToOne(fetch = FetchType.EAGER)
+    // private Weather weather;
+
+
+    public ForecastDTO toForecastDTO() {
+        return ForecastDTO.builder()
+        .id(id)
+        .date(date)
+        .weekday(weekday)
+        .max(max)
+        .min(min)
+        .description(description)
+        .condition(condition)
+        .build();
+    }
 }
